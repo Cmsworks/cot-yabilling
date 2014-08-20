@@ -1,0 +1,104 @@
+<?php
+
+/**
+ * [BEGIN_COT_EXT]
+ * Hooks=standalone
+ * [END_COT_EXT]
+ */
+/**
+ * Yandex money billing Plugin
+ *
+ * @package yabilling
+ * @version 1.0
+ * @author devkont (Yusupov)
+ * @copyright (c) CMSWorks Team 2013
+ * @license BSD
+ */
+defined('COT_CODE') && defined('COT_PLUG') or die('Wrong URL');
+
+require_once cot_incfile('yabilling', 'plug');
+require_once cot_incfile('payments', 'module');
+
+$m = cot_import('m', 'G', 'ALP');
+$pid = cot_import('pid', 'G', 'INT');
+
+if (empty($m))
+{
+	// Получаем информацию о заказе
+	if (!empty($pid) && $pinfo = cot_payments_payinfo($pid))
+	{
+
+		cot_block($pinfo['pay_status'] == 'new' || $pinfo['pay_status'] == 'process');
+
+		$out_summ = $pinfo['pay_summ']*$cfg['plugin']['yabilling']['rate'];
+		$inv_id = $pid;
+		$inv_desc = $pinfo['pay_desc'];
+		$inv_desc2 = $pinfo['pay_desc'];
+		
+		$yandex_form = "<form id=yandexform action=\"https://money.yandex.ru/quickpay/confirm.xml\" method=\"POST\">
+					<input type=\"hidden\" value=\"".$cfg['plugin']['yabilling']['yandex_num']."\" name=\"receiver\">
+					<input type=\"hidden\" value=\"".$inv_id."\" name=\"label\">
+					<input type=\"hidden\" value=\"".$inv_desc."\" name=\"FormComment\">
+					<input type=\"hidden\" value=\"".$inv_desc."\" name=\"short-dest\">
+					<input type=\"hidden\" name=\"quickpay-form\" value=\"shop\">
+					<input type=\"hidden\" value=\"false\" name=\"writable-targets\">
+					<input type=\"hidden\" value=\"false\" name=\"writable-sum\">
+					<input type=\"hidden\" value=\"false\" name=\"comment-needed\">
+					<input type=\"hidden\" value=\"".$inv_desc2."\" name=\"targets\">
+					<input type=\"hidden\" value=\"".$out_summ."\" name=\"sum\">
+					<input type=\"submit\" value=\"".$L['yabilling_formbuy']."\" class=\"btn btn-success btn-large\">
+				</form>";
+
+		$t->assign(array(
+			'BILLING_FORM' => $yandex_form,
+		));
+		$t->parse("MAIN.BILLINGFORM");
+		
+		cot_payments_updatestatus($pid, 'process'); // Изменяем статус "в процессе оплаты"
+	}
+	else
+	{
+		cot_die();
+	}
+}
+elseif ($m == 'success')
+{
+	$status_data = $_POST;
+	
+//	if($status_data['ik_payment_state'] == 'success' && $status_data['ik_shop_id'] == $cfg['plugin']['yabilling']['shop_id'])
+//	{
+		
+		// проверка наличия номера платежки и ее статуса
+		$pinfo = cot_payments_payinfo($status_data['label']);
+		if ($pinfo['pay_status'] == 'done')
+		{
+			$plugin_body = $L['yabilling_error_done'];
+		}
+		elseif ($pinfo['pay_status'] == 'paid')
+		{
+			$plugin_body = $L['yabilling_error_paid'];
+		}
+		else
+		{
+			$plugin_body = $L['roboxbilling_error_otkaz'];
+		}
+//	}
+//	else{
+//		$plugin_body = $L['yabilling_error_incorrect'];
+//	}
+
+	$t->assign(array(
+		"BILLING_TITLE" => $L['yabilling_error_title'],
+		"BILLING_ERROR" => $plugin_body
+	));
+	$t->parse("MAIN.ERROR");
+}
+elseif ($m == 'fail')
+{
+	$t->assign(array(
+		"BILLING_TITLE" => $L['yabilling_error_title'],
+		"BILLING_ERROR" => $L['yabilling_error_fail']
+	));
+	$t->parse("MAIN.ERROR");
+}
+?>
