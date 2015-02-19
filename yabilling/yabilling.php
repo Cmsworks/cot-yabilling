@@ -65,42 +65,10 @@ if (empty($m))
 }
 elseif ($m == 'success')
 {
-	$status_data = $_POST;
-	
-//	if($status_data['ik_payment_state'] == 'success' && $status_data['ik_shop_id'] == $cfg['plugin']['yabilling']['shop_id'])
-//	{
-		
-		// проверка наличия номера платежки и ее статуса
-		$pinfo = cot_payments_payinfo($status_data['label']);
-		if ($pinfo['pay_status'] == 'done')
-		{
-			$plugin_body = $L['yabilling_error_done'];
-			$redirect = $pinfo['pay_redirect'];
-		}
-		elseif ($pinfo['pay_status'] == 'paid')
-		{
-			$plugin_body = $L['yabilling_error_paid'];
-		}
-		else
-		{
-			$plugin_body = $L['roboxbilling_error_otkaz'];
-		}
-//	}
-//	else{
-//		$plugin_body = $L['yabilling_error_incorrect'];
-//	}
-
 	$t->assign(array(
 		"BILLING_TITLE" => $L['yabilling_error_title'],
-		"BILLING_ERROR" => $plugin_body
+		"BILLING_ERROR" => $L['yabilling_error_paid']
 	));
-	
-	if($redirect){
-		$t->assign(array(
-			"BILLING_REDIRECT_TEXT" => sprintf($L['yabilling_redirect_text'], $redirect),
-			"BILLING_REDIRECT_URL" => $redirect,
-		));
-	}
 	
 	$t->parse("MAIN.ERROR");
 }
