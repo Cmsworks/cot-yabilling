@@ -46,6 +46,8 @@ if (empty($m))
 					<input type=\"hidden\" value=\"false\" name=\"comment-needed\">
 					<input type=\"hidden\" value=\"".$inv_desc2."\" name=\"targets\">
 					<input type=\"hidden\" value=\"".$out_summ."\" name=\"sum\">
+					<input type=\"hidden\" value=\"".$cfg['mainurl']."/index.php?e=yabilling&m=success\" name=\"successUrl\">
+					<input type=\"hidden\" value=\"".$cfg['mainurl']."/index.php?e=yabilling&m=fail\" name=\"failUrl\">
 					<input type=\"submit\" value=\"".$L['yabilling_formbuy']."\" class=\"btn btn-success btn-large\">
 				</form>";
 
@@ -73,6 +75,7 @@ elseif ($m == 'success')
 		if ($pinfo['pay_status'] == 'done')
 		{
 			$plugin_body = $L['yabilling_error_done'];
+			$redirect = $pinfo['pay_redirect'];
 		}
 		elseif ($pinfo['pay_status'] == 'paid')
 		{
@@ -91,6 +94,14 @@ elseif ($m == 'success')
 		"BILLING_TITLE" => $L['yabilling_error_title'],
 		"BILLING_ERROR" => $plugin_body
 	));
+	
+	if($redirect){
+		$t->assign(array(
+			"BILLING_REDIRECT_TEXT" => sprintf($L['yabilling_redirect_text'], $redirect),
+			"BILLING_REDIRECT_URL" => $redirect,
+		));
+	}
+	
 	$t->parse("MAIN.ERROR");
 }
 elseif ($m == 'fail')
