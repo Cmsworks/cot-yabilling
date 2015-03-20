@@ -20,10 +20,15 @@ $L['info_desc'] = 'Payment plugin Yandex.Money';
 $L['cfg_yandex_num'] = array('Yandex.money number', '');
 $L['cfg_secret_key'] = array('Secret key', '');
 $L['cfg_rate'] = array('Exchange rate', '');
+$L['cfg_typechoise'] = array('Switch payment type choise', '');
 
 $L['yabilling_title'] = 'Yandex.Money';
 
+$L['yabilling_paymenttype_yandex'] = 'Yandex.Money';
+$L['yabilling_paymenttype_card'] = 'Card';
+
 $L['yabilling_formtext'] = 'Now you will be redirected to the payment system Yandex.Money for payment. If not, click the "Go to payment".';
+$L['yabilling_formtext1'] = 'After clicking on "Go to payment" you will be redirected to the payment system Yandex.Money for payment.';
 $L['yabilling_formbuy'] = 'Go to payment';
 $L['yabilling_error_paid'] = 'Payment was successful. In the near future the service will be activated!';
 $L['yabilling_error_done'] = 'Payment was successful.';

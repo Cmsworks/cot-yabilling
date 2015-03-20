@@ -35,6 +35,11 @@ if (empty($m))
 		$inv_desc = $pinfo['pay_desc'];
 		$inv_desc2 = $pinfo['pay_desc'];
 		
+		if($cfg['plugin']['yabilling']['typechoise']){
+			$payment_type_choise = "<label><input type=\"radio\" name=\"paymentType\" checked=\"checked\" value=\"PC\"> ".$L['yabilling_paymenttype_yandex']."</label><br/>
+				<label><input type=\"radio\" name=\"paymentType\" value=\"AC\"> ".$L['yabilling_paymenttype_card']."</label><br/><br/>";
+		}
+		
 		$yandex_form = "<form id=yandexform action=\"https://money.yandex.ru/quickpay/confirm.xml\" method=\"POST\">
 					<input type=\"hidden\" value=\"".$cfg['plugin']['yabilling']['yandex_num']."\" name=\"receiver\">
 					<input type=\"hidden\" value=\"".$inv_id."\" name=\"label\">
@@ -48,6 +53,7 @@ if (empty($m))
 					<input type=\"hidden\" value=\"".$out_summ."\" name=\"sum\">
 					<input type=\"hidden\" value=\"".$cfg['mainurl']."/index.php?e=yabilling&m=success\" name=\"successUrl\">
 					<input type=\"hidden\" value=\"".$cfg['mainurl']."/index.php?e=yabilling&m=fail\" name=\"failUrl\">
+					".$payment_type_choise."
 					<input type=\"submit\" value=\"".$L['yabilling_formbuy']."\" class=\"btn btn-success btn-large\">
 				</form>";
 

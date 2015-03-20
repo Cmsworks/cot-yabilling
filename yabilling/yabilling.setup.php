@@ -6,7 +6,7 @@
  * Name=Yandexbilling
  * Category=Payments
  * Description=Yandex money billing system
- * Version=1.0.2
+ * Version=1.0.3
  * Date=
  * Author=devkont (Yusupov)
  * Copyright=&copy; CMSWorks Team 2013
@@ -22,6 +22,7 @@
  * yandex_num=01:string:::Номер кошелька
  * secret_key=02:string:::Секретное слово
  * rate=03:string::1:Соотношение суммы к валюте сайта
+ * typechoise=04:radio::1:Включить выбор способа оплаты
  * [END_COT_EXT_CONFIG]
  */
 
@@ -29,7 +30,7 @@
  * yandex money billing Plugin
  *
  * @package yabilling
- * @version 1.0.2
+ * @version 1.0.3
  * @author devkont (Yusupov)
  * @copyright (c) CMSWorks Team 2013
  * @license BSD
