@@ -36,13 +36,31 @@ $sha1_hash = sha1($par_string);
 
 if ($sha1_hash == $status_data['sha1_hash'] && !$status_data['test_notification'])
 {
-	if(cot_payments_updatestatus($status_data['label'], 'paid'))
-	{
-		header ( 'HTTP/1.1 200' );
-	}
-	else
+	$pinfo = $db->query("SELECT * FROM $db_payments
+		WHERE pay_id='" . (int)$status_data['label'] . "' 
+			AND pay_status='process'")->fetch();
+
+	if(empty($pinfo))
 	{
 		header ( 'HTTP/1.1 302' );
+	}
+	else
+	{	
+		if($status_data['amount'] == $pinfo['pay_summ']*$cfg['plugin']['yabilling']['rate'])
+		{
+			if(cot_payments_updatestatus($status_data['label'], 'paid'))
+			{
+				header ( 'HTTP/1.1 200' );
+			}
+			else
+			{
+				header ( 'HTTP/1.1 302' );
+			}
+		}
+		else
+		{
+			header ( 'HTTP/1.1 302' );
+		}
 	}
 }
 elseif($status_data['test_notification'])
