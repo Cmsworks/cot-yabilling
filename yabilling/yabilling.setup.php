@@ -6,7 +6,7 @@
  * Name=Yandexbilling
  * Category=Payments
  * Description=Yandex money billing system
- * Version=1.0.3
+ * Version=1.0.4
  * Date=
  * Author=devkont (Yusupov)
  * Copyright=&copy; CMSWorks Team 2013
@@ -26,13 +26,4 @@
  * [END_COT_EXT_CONFIG]
  */
 
-/**
- * yandex money billing Plugin
- *
- * @package yabilling
- * @version 1.0.3
- * @author devkont (Yusupov)
- * @copyright (c) CMSWorks Team 2013
- * @license BSD
- */
 ?>
