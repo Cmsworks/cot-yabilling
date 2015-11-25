@@ -6,7 +6,7 @@
  * Name=Yandexbilling
  * Category=Payments
  * Description=Yandex money billing system
- * Version=1.0.4
+ * Version=1.0.5
  * Date=
  * Author=devkont (Yusupov)
  * Copyright=&copy; CMSWorks Team 2013
