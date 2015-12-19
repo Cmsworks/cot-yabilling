@@ -46,7 +46,7 @@ if ($sha1_hash == $status_data['sha1_hash'] && !$status_data['test_notification'
 	}
 	else
 	{	
-		$amount = number_format($pinfo['pay_summ']*$cfg['plugin']['yabilling']['rate'], 2);
+		$amount = number_format($pinfo['pay_summ']*$cfg['plugin']['yabilling']['rate'], 2, '.', '');
 		if($status_data['withdraw_amount'] == $amount)
 		{
 			if(cot_payments_updatestatus($status_data['label'], 'paid'))

@@ -30,7 +30,7 @@ if (empty($m))
 
 		cot_block($pinfo['pay_status'] == 'new' || $pinfo['pay_status'] == 'process');
 
-		$out_summ = number_format($pinfo['pay_summ']*$cfg['plugin']['yabilling']['rate'], 2);
+		$out_summ = number_format($pinfo['pay_summ']*$cfg['plugin']['yabilling']['rate'], 2, '.', '');
 		$inv_id = $pid;
 		$inv_desc = $pinfo['pay_desc'];
 		$inv_desc2 = $pinfo['pay_desc'];
